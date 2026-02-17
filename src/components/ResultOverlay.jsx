@@ -75,6 +75,14 @@ export default function ResultOverlay({ location, distance, points, onNext, isLa
           <span className="font-display text-5xl font-bold text-gold">+{points}</span>
           <p className="text-gray-500 text-xs mt-1">points</p>
         </div>
+        {location.funFact && (
+          <p
+            className="text-gray-300 text-xs mt-4 px-2 leading-relaxed border-t border-gold/20 pt-3"
+            style={{ animation: 'funMessageSlide 0.5s ease-out 0.5s both' }}
+          >
+            {location.funFact}
+          </p>
+        )}
         <button
           onClick={onNext}
           className="mt-6 bg-gold hover:bg-gold-dark text-black font-display text-lg font-bold px-8 py-3 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
