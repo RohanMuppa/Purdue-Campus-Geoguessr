@@ -26,8 +26,8 @@ const locations = [
   {
     id: 4,
     name: 'Ross-Ade Stadium',
-    lat: 40.4340,
-    lng: -86.9177,
+    lat: 40.4344,
+    lng: -86.9184,
     image: 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Ross-Ade_Stadium.jpg',
     funFact: 'Opened in 1924 and seats 57,236 fans. Named after David Ross and George Ade, who donated the land. The Boilermakers\' "Breakfast Club" tradition fills the stadium at 7am on game days.',
   },
