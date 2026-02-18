@@ -8,8 +8,10 @@ export default function App() {
   const [phase, setPhase] = useState('start')
   const [locations, setLocations] = useState([])
   const [results, setResults] = useState([])
+  const [username, setUsername] = useState('')
 
-  const handleStart = useCallback(() => {
+  const handleStart = useCallback((name) => {
+    setUsername(name)
     setLocations(getRandomLocations(5))
     setResults([])
     setPhase('playing')
@@ -29,7 +31,7 @@ export default function App() {
         <GameScreen locations={locations} onGameEnd={handleGameEnd} />
       )}
       {phase === 'gameover' && (
-        <EndScreen results={results} totalScore={totalScore} onPlayAgain={handleStart} />
+        <EndScreen results={results} totalScore={totalScore} username={username} onPlayAgain={() => setPhase('start')} />
       )}
     </div>
   )

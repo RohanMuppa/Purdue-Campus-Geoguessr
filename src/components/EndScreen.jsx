@@ -10,11 +10,22 @@ function getGrade(score) {
   return { emoji: '\u{1F605}', label: 'Lost Tourist' }
 }
 
-export default function EndScreen({ results, totalScore, onPlayAgain }) {
+const FAKE_PLAYERS = [
+  { name: 'BoilerPete99', score: 4200 },
+  { name: 'PurdueEngineer', score: 3400 },
+  { name: 'GoldAndBlack', score: 2100 },
+  { name: 'FreshmanAndy', score: 1300 },
+]
+
+export default function EndScreen({ results, totalScore, username, onPlayAgain }) {
   const maxScore = results.length * 1000
   const grade = getGrade(totalScore)
   const percentage = Math.round((totalScore / maxScore) * 100)
   const [copied, setCopied] = useState(false)
+
+  const leaderboard = [...FAKE_PLAYERS, { name: username || 'You', score: totalScore, isPlayer: true }]
+    .sort((a, b) => b.score - a.score)
+    .map((entry, i) => ({ ...entry, rank: i + 1 }))
 
   const handleShare = async () => {
     const text = `I scored ${totalScore}/5000 on Purdue Campus GeoGuessr! \u{1F682}\u26A1`
@@ -77,6 +88,30 @@ export default function EndScreen({ results, totalScore, onPlayAgain }) {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="w-full mb-6">
+          <h2 className="font-display text-gold text-xl font-bold mb-3">LEADERBOARD</h2>
+          <div className="space-y-2">
+            {leaderboard.map((entry) => (
+              <div
+                key={entry.name}
+                className={`flex items-center justify-between rounded-lg px-4 py-2.5 ${entry.isPlayer ? 'bg-gold/20 border border-gold/50' : 'bg-white/5'}`}
+              >
+                <div className="flex items-center gap-3">
+                  <span className={`font-display font-bold text-lg w-6 ${entry.rank === 1 ? 'text-yellow-400' : entry.rank === 2 ? 'text-gray-300' : entry.rank === 3 ? 'text-amber-600' : 'text-gray-500'}`}>
+                    {entry.rank}
+                  </span>
+                  <span className={`text-sm ${entry.isPlayer ? 'text-gold font-bold' : 'text-white'}`}>
+                    {entry.name} {entry.isPlayer ? '(You)' : ''}
+                  </span>
+                </div>
+                <span className={`font-display font-bold ${entry.isPlayer ? 'text-gold' : 'text-gray-400'}`}>
+                  {entry.score}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

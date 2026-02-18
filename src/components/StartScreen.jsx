@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 export default function StartScreen({ onStart }) {
   const [particles, setParticles] = useState([])
   const [trainPos, setTrainPos] = useState(-200)
+  const [showNameInput, setShowNameInput] = useState(false)
+  const [username, setUsername] = useState('')
 
   // Generate floating gold particles on mount
   useEffect(() => {
@@ -169,14 +171,40 @@ export default function StartScreen({ onStart }) {
         <p className="text-gray-400 text-lg mb-12 max-w-md mx-auto px-4">
           Can you identify locations on Purdue's campus? Click the map to guess where each photo was taken.
         </p>
-        <button
-          onClick={onStart}
-          className="bg-gold hover:bg-gold-dark text-black font-display text-2xl font-bold px-12 py-4 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
-          style={{ animation: 'buttonGlow 2s infinite ease-in-out' }}
-        >
-          BOILER UP!
-        </button>
-        <p className="text-gray-500 text-sm mt-6">5 rounds &middot; Score by accuracy</p>
+        {!showNameInput ? (
+          <>
+            <button
+              onClick={() => setShowNameInput(true)}
+              className="bg-gold hover:bg-gold-dark text-black font-display text-2xl font-bold px-12 py-4 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
+              style={{ animation: 'buttonGlow 2s infinite ease-in-out' }}
+            >
+              BOILER UP!
+            </button>
+            <p className="text-gray-500 text-sm mt-6">5 rounds &middot; Score by accuracy</p>
+          </>
+        ) : (
+          <div className="animate-fade-in">
+            <p className="text-gold font-display text-lg mb-3">ENTER YOUR NAME</p>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && username.trim() && onStart(username.trim())}
+              placeholder="Boilermaker123"
+              maxLength={20}
+              autoFocus
+              className="bg-white/10 border-2 border-gold/50 focus:border-gold rounded-lg px-6 py-3 text-white text-center font-display text-xl outline-none w-64 mb-4 placeholder-gray-500"
+            />
+            <br />
+            <button
+              onClick={() => username.trim() && onStart(username.trim())}
+              disabled={!username.trim()}
+              className="bg-gold hover:bg-gold-dark disabled:opacity-40 text-black font-display text-xl font-bold px-10 py-3 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
+            >
+              LET'S GO!
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )
